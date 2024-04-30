@@ -23,16 +23,13 @@ class EventsDataSourceTest extends TestCase
 
     /**
      * @dataProvider provideItems
+     * @param string $sourcePath
+     * @param array $expectedItems
      * @return void
      */
-    public function testGetList(string $sourcePath, array $expectedItems)
+    public function testGetList(string $sourcePath, array $expectedItems): void
     {
-//        var_dump($expectedItems);
-//        die("\n".__METHOD__.':'.__LINE__.':'.__FILE__.PHP_EOL);
-
         $this->assertFileExists($sourcePath);
-//        $job = new OptimizationJob($sourcePath);
-
         $dataSource = new \EventsDataSource($sourcePath);
 
         /**
@@ -52,7 +49,7 @@ class EventsDataSourceTest extends TestCase
         }
     }
 
-    public function testNoFileSource()
+    public function testNoFileSource(): void
     {
         $tmpFile = '/tmp/file_not_exists.txt';
         $this->expectExceptionMessage('File not found: ' . $tmpFile);

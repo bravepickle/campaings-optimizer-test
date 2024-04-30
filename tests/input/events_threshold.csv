@@ -1,0 +1,42 @@
+type,campaign_id,publisher_id,timestamp,comment
+install,4,10,1704071400,outdated - skip
+register,4,10,1704071400,outdated - skip
+open_app,4,10,1704071400,outdated - skip
+invite,4,10,1704071400,outdated - skip
+install,3,10,1704071400,outdated - skip
+register,3,10,1704071400,outdated - skip
+open_app,3,10,1704071400,outdated - skip
+invite,3,10,1704071400,outdated - skip
+register,3,10,1709251200,low threshold - skip
+register,3,10,1709251200,low threshold - skip
+register,3,10,1709251200,low threshold - skip
+register,3,10,1709251200,low threshold - skip
+register,3,10,1709251200,low threshold - skip
+register,3,10,1709251200,low threshold - skip
+invite,3,10,1709251200,low threshold - skip
+invite,3,10,1709251200,low threshold - skip
+invite,3,10,1709251200,low threshold - skip
+invite,3,10,1709251200,low threshold - skip
+install,4,10,1709252200,ok - allowed
+install,4,10,1709252200,ok - allowed
+install,4,10,1709252200,ok - allowed
+install,4,10,1709252200,ok - allowed
+install,4,10,1709252200,ok - allowed
+install,4,10,1709252200,ok - allowed
+install,4,10,1709252200,ok - allowed
+invite,4,10,1709253200,ok - allowed
+invite,4,10,1709253200,ok - allowed
+invite,4,10,1709253200,ok - allowed
+invite,4,10,1709253200,ok - allowed
+invite,4,10,1709253200,ok - allowed
+invite,4,10,1709253200,ok - allowed
+invite,4,10,1709253200,ok - allowed
+install,4,300,1709253200,ok - whitelist
+install,4,300,1709253200,ok - whitelist
+install,4,300,1709253200,ok - whitelist
+install,4,300,1709253200,ok - whitelist
+install,4,300,1709253200,ok - whitelist
+invite,4,300,1709254200,ok - whitelist
+invite,4,300,1709254200,ok - whitelist
+invite,4,300,1709254200,ok - whitelist
+invite,4,300,1709254200,ok - whitelist

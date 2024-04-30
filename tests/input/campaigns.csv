@@ -1,0 +1,3 @@
+campaign_id,source_event,measured_event,threshold,ratio_threshold,blacklist
+1,install,purchase,100,1.5,"1,3"
+2,install,update,200,2,

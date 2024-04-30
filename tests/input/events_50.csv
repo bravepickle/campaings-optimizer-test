@@ -1,0 +1,31 @@
+type,campaign_id,publisher_id,timestamp,comment
+install,1,10,1704071400,outdated - skip
+purchase,1,10,1704071400,outdated - skip
+register,1,10,1709251200,different event - not affects results
+install,1,10,1709251200,ok - edge case
+install,1,10,1709251200,ok - edge case
+purchase,1,10,1709251200,ok - edge case
+purchase,1,10,1709251200,ok - edge case
+install,1,20,1709251200,no purchases - must be blacklisted
+install,1,30,1709251200,all is ok - exceeds goals
+install,1,30,1709251200,all is ok - exceeds goals
+purchase,1,30,1709251201,all is ok - exceeds goals
+purchase,1,30,1709251201,all is ok - exceeds goals
+purchase,1,30,1709251201,all is ok - exceeds goals
+purchase,1,30,1709251201,all is ok - exceeds goals
+purchase,1,30,1709251201,all is ok - exceeds goals
+purchase,1,30,1709251201,all is ok - exceeds goals
+purchase,1,30,1709251201,all is ok - exceeds goals
+purchase,1,30,1709251201,all is ok - exceeds goals
+purchase,1,40,1709251300,blacklisted - goals not reached
+purchase,1,40,1709251300,blacklisted - goals not reached
+install,1,40,1709251300,blacklisted - goals not reached
+install,1,40,1709251300,blacklisted - goals not reached
+install,1,40,1709251300,blacklisted - goals not reached
+install,1,40,1709251300,blacklisted - goals not reached
+install,1,40,1709251300,blacklisted - goals not reached
+install,1,100,1709251200,prev blacklisted - must stay
+install,1,100,1709251200,prev blacklisted - must stay
+install,1,200,1709251200,prev blacklisted - must be whitelisted
+purchase,1,200,1709251200,prev blacklisted - must be whitelisted
+purchase,1,200,1709251200,prev blacklisted - must be whitelisted

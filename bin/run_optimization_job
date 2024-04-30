@@ -1,0 +1,39 @@
+#!/usr/bin/env php
+<?php
+/**
+ * Run Optimization Job with generated data and profiler
+ */
+
+//require_once dirname(__DIR__).'/output/optimized_job.php';
+require_once dirname(__DIR__).'/vendor/autoload.php';
+
+$started = microtime(true);
+
+$eventsCount = (int)($argv[1] ?? 100000);
+$campaignsCount = (int)($argv[2] ?? 1000);
+
+$projectDir = dirname(__DIR__);
+
+function convertMemory($size): string
+{
+    $unit = ['B', 'KB', 'MB', 'GB', 'TB', 'PB'];
+
+    return round($size / (1024 ** ($i = floor(log($size, 1024)))), 2).$unit[$i];
+}
+
+$conn = new Redis(['host' => 'redis-db']);
+$job = new OptimizationJob(
+    $conn,
+    '2024-02-01 00:00:00',
+    __DIR__.'/../input/campaigns.csv',
+    __DIR__.'/../input/events.csv',
+//    false,
+);
+
+$job->run();
+
+$timeDiff = microtime(true) - $started;
+echo sprintf('Processing job took %d seconds', $timeDiff), PHP_EOL;
+echo sprintf('Memory usage: %s', convertMemory(memory_get_usage(true))), PHP_EOL;
+echo sprintf('Memory peak usage: %s', convertMemory(memory_get_peak_usage(true))), PHP_EOL;
+

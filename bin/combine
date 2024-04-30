@@ -1,0 +1,26 @@
+#!/usr/bin/env php
+<?php
+/**
+ * Combine all PHP files into one
+ * for productivity reasons
+ */
+
+$projectDir = dirname(__DIR__);
+$targetPath = $projectDir.'/output/optimized_job.php';
+
+$iterator = (new GlobIterator($projectDir.DIRECTORY_SEPARATOR.'src/**/*.php'));
+$fileContents = ['<?php', 'declare(strict_types=1);', ''];
+$offset = strlen($projectDir) + 1;
+
+/** @var SplFileInfo $item */
+foreach ($iterator as $item) {
+    $relativePath = substr($item->getPathname(), $offset);
+    echo 'Processing file: ' . $relativePath . PHP_EOL;
+    $fileContents[] =
+        sprintf('/** @file %s */', $relativePath).PHP_EOL.
+        trim(str_replace(['<?php', 'declare(strict_types=1);'], '', file_get_contents($item->getRealPath()))).PHP_EOL;
+}
+
+file_put_contents($targetPath, implode(PHP_EOL, $fileContents));
+
+echo "Successfully combined to file: $targetPath".PHP_EOL;

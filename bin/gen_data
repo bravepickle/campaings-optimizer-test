@@ -1,0 +1,91 @@
+#!/usr/bin/env php
+<?php
+/**
+ * Generate random data for testing performance
+ * Usage: php ./gen_data <events_count> <campaigns_count>
+ */
+
+//echo "<pre>\n";
+//print_r($argv);
+//die("\n".__METHOD__.':'.__LINE__.':'.__FILE__.PHP_EOL);
+
+$eventsCount = (int)($argv[1] ?? 100000);
+$campaignsCount = (int)($argv[2] ?? 1000);
+
+$projectDir = dirname(__DIR__);
+$targetPathCampaigns = $projectDir.'/input/campaigns.csv';
+$targetPathEvents = $projectDir.'/input/events.csv';
+$events = [
+    'install' => true,
+    'update' => true,
+    'open_app' => true,
+    'invite' => true,
+    'register' => true,
+    'purchase' => true,
+    'delete' => true,
+];
+
+function genCampaigns(string $targetPath, int $itemsCount, array $events): void
+{
+    $fh = fopen($targetPath, 'wb');
+    try {
+        fputcsv($fh, ['campaign_id', 'source_event', 'measured_event', 'threshold', 'ratio_threshold', 'blacklist']);
+
+        $rand = new \Random\Randomizer();
+
+
+        for ($i = 0; $i < $itemsCount; $i++) {
+            [$srcEvent] = $rand->pickArrayKeys($events, 1);
+            $measuredEvents = $events;
+            unset($measuredEvents[$srcEvent]); // source event cannot match measured event
+            [$measuredEvent] = $rand->pickArrayKeys($measuredEvents, 1);
+
+            $row = [
+                $rand->getInt(1, 10),
+                $srcEvent,
+                $measuredEvent,
+                $rand->getInt(1, 20),
+                round($rand->getFloat(0.1, 1), 3),
+                implode(',', [$rand->getInt(1, 100), $rand->getInt(101, 200)]),
+            ];
+
+            fputcsv($fh, $row);
+        }
+    } finally {
+        fclose($fh);
+    }
+}
+
+function genEvents(string $targetPath, int $itemsCount, array $events): void
+{
+    $fh = fopen($targetPath, 'wb');
+    try {
+        fputcsv($fh, ['type', 'campaign_id', 'publisher_id', 'timestamp']);
+
+        $rand = new \Random\Randomizer();
+
+        $minTimestamp = (new DateTime('2024-01-01 00:00:00'))->getTimestamp();
+        $maxTimestamp = (new DateTime('2024-05-01 00:00:00'))->getTimestamp();
+
+        for ($i = 0; $i < $itemsCount; $i++) {
+            [$event] = $rand->pickArrayKeys($events, 1);
+
+            $row = [
+                $event,
+                $rand->getInt(1, 10),
+                $rand->getInt(1, 300),
+                $rand->getInt($minTimestamp, $maxTimestamp),
+            ];
+
+            fputcsv($fh, $row);
+        }
+    } finally {
+        fclose($fh);
+    }
+}
+
+genCampaigns($targetPathCampaigns, $campaignsCount, $events);
+echo "Successfully generated file: $targetPathCampaigns. Size: $campaignsCount".PHP_EOL;
+
+genEvents($targetPathEvents, $eventsCount, $events);
+echo "Successfully generated file: $targetPathEvents. Size: $eventsCount".PHP_EOL;

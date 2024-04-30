@@ -130,7 +130,7 @@ Here some of the applied optimizations listed and partially explained
 ## Performance
 The script was run under Docker with MacOS M1 system with data set of: 
 events - 1 million records, campaigns - 1000 records (see `output/*.csv` files). 
-It took around 60 seconds and 5MB of RAM to complete processing.
+It took around 45 seconds and 5MB of RAM to complete processing.
 
 ```shell
 $ docker exec app composer run app:run

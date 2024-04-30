@@ -1,6 +1,35 @@
 # Campaigns optimiser test task
 This is one of the solutions for the solving test task for Ad Campaigns Optimization Job.
 
+## Test results
+* main resulting file is `output/optimized_job.php` as whole or its split copy found under `src/` folder in PHP files
+  to simplify managing code.
+* the rest of files are for testing purposes and setting up development environment.
+* profiling info, code coverage, unit tests and other functionality is explained in README below.
+* performance results: processing 1 million events with 1000 campaigns in Dockerized environment for average notebook
+  takes about 45 seconds and 5MB of RAM.
+* solution is made by using PHP and Redis for reaching high performance and stability of usage. CSV files are just used
+  as data providers to update and share easily input data - not for production.
+* some utilities and code was added to better test and maintain test project.
+
+## Setup
+1. Install Docker & Docker Compose
+2. Go to project folder and run
+    ```shell
+    $ docker compose up -d
+    $ docker compose exec app composer install
+    ```
+3. Done! Now you can run tests and script, if necessary
+    ```shell
+    # run Unit tests
+    $ docker compose exec app composer run app:test
+    # run Optimization Job
+    $ docker compose exec app composer run app:run
+    # combine Optimization Job files to single file - output/optimized_job.php
+    $ docker compose exec app bin/combine
+    # and many more... See info below
+    ```
+
 ## Features
 * Added `Docker Compose` for setup testing environment
     * `redis` container contains Redis DB used for runtime processing of OptimizationJob script
@@ -19,12 +48,13 @@ This is one of the solutions for the solving test task for Ad Campaigns Optimiza
   * `app:run` - run script `bin/run_optimization_job` with prepared data sets from `input` folder. Can use `autoloader` 
     or `output/optimized_job.php` script for data processing.
   * `app:run:profile` - run script `bin/run_optimization_job` with Xdebug profiling. Results stored in folder `tests/output`.
+  * `app:combine` - run script `bin/combine`
   * `app:test` - run unit tests
   * `app:test:cover-txt` - run unit tests with code coverage in TXT format. Results stored in folder `tests/output`.
   * `app:test:cover-html` - run unit tests with code coverage in HTML format
 * PHPUnit test coverage - 100%
-  ```shell
-  $ composer run app:test:cover-txt
+    ```shell
+    $ composer run app:test:cover-txt
     > @php -d 'xdebug.mode=coverage' vendor/bin/phpunit -c phpunit.xml --coverage-text=tests/output/coverage.txt && cat tests/output/coverage.txt
     PHPUnit 9.6.19 by Sebastian Bergmann and contributors.
     
@@ -57,26 +87,29 @@ This is one of the solutions for the solving test task for Ad Campaigns Optimiza
     Methods: 100.00% ( 8/ 8)   Lines: 100.00% ( 83/ 83)
     OptimizationProps
     Methods: 100.00% ( 1/ 1)   Lines: 100.00% (  1/  1)
-* ```
+    ```
   
 ## Optimizations
 Here some of the applied optimizations listed and partially explained 
 * generators are more memory efficient when working with big data sets
 * strict typing helps garbage collector to solve references and free up memory more efficiently. 
-  Also it helps to avoid bugs.
+  Also, it helps to avoid bugs.
 * TTL of variables, objects should be as small as possible. Resources must be quickly freed or reused
 * combining all files into one can help with loading all necessary data faster. Autoloader may slow up script runs. 
   For the given task tests show it does not have substantial speedup though. It is due to small number of files required.
 * Redis serves here the main factor for efficient usage of resources. It has optimized data handling solutions, 
   transactions and easy to use. The lower number of operations and closer DB to PHP scripts the faster it will be.
 * SPL library and native optimized functions give great increase in speed. `SplFixedArray`, iterators and other 
-  components help to minimize memory and balance out speed of data processing.
-* by avoiding usage of getter-setter methods, use of `readonly` props it is possible to minimize processing time 
+  components help minimizing memory consumption and balance out speed of data processing.
+* by avoiding usage of getter-setter methods, use of `readonly` props it is possible to shorten processing time 
   somewhat without having any negative impact on usability of entity classes.
 * batch processing of event counters lessens number requests to Redis DB using pipelines.
 
 ## Notes
-* `ratioThreshold` was interpreted as `measuredEvent / sourceEvent`. It provides more clear understanding with usage. 
+* `ratioThreshold` was interpreted as ratio `measuredEvent / sourceEvent`. It provides more clear 
+  understanding with usage. So, for the provided example `a campaign may expect the number of "purchase" 
+  events a publisher brings to be equal or greater than 10% of the number of installs that publishers brought` we'll
+  have `ratioThreshold = 10 / 100 = 0.1`
 * Some additional work was added to improve testing, performance for the script. So not only a place with placeholder 
   `// START HERE` was changed but data providers, entities also.
 * Classes `EventsDataSource`, `CampaignDataSource` are lightly optimized to ease the writing tests 
@@ -92,6 +125,7 @@ Here some of the applied optimizations listed and partially explained
 * Redis DB should be put on host system or closer without Docker and similar wrappers. Optimize configs to improve 
   performance, durability, availability etc.
 * `Notifier` class was added for testing purposes to check sending email and proper handling blacklisting publishers.
+* Some extra edge cases are skipped to avoid requirements specification and longer coding.
 
 ## Performance
 The script was run under Docker with MacOS M1 system with data set of: 

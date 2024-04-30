@@ -5,10 +5,6 @@
  * Usage: php ./gen_data <events_count> <campaigns_count>
  */
 
-//echo "<pre>\n";
-//print_r($argv);
-//die("\n".__METHOD__.':'.__LINE__.':'.__FILE__.PHP_EOL);
-
 $eventsCount = (int)($argv[1] ?? 100000);
 $campaignsCount = (int)($argv[2] ?? 1000);
 
@@ -32,7 +28,6 @@ function genCampaigns(string $targetPath, int $itemsCount, array $events): void
         fputcsv($fh, ['campaign_id', 'source_event', 'measured_event', 'threshold', 'ratio_threshold', 'blacklist']);
 
         $rand = new \Random\Randomizer();
-
 
         for ($i = 0; $i < $itemsCount; $i++) {
             [$srcEvent] = $rand->pickArrayKeys($events, 1);

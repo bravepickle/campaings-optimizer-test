@@ -1,6 +1,6 @@
 <?php
 
-namespace AppTest\Unit;
+namespace AppTest;
 
 use Campaign;
 use PHPUnit\Framework\TestCase;

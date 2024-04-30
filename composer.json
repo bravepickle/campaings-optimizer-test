@@ -1,15 +1,15 @@
 {
-    "name": "viko/campaings-optimizer-test",
+    "name": "bravepickle/campaings-optimizer-test",
     "description": "Campaigns optimizer test task",
     "type": "project",
     "require-dev": {
         "phpunit/phpunit": "^9.6"
     },
-    "license": "MIT",
+    "license": "Apache-2.0",
     "authors": [
         {
-            "name": "Victor Konovalov",
-            "email": "2bravepickle@gmail.com"
+            "name": "Bravepickle",
+            "email": "5560300+bravepickle@users.noreply.github.com"
         }
     ],
     "minimum-stability": "stable",
@@ -27,6 +27,7 @@
         }
     },
     "scripts": {
+        "app:combine": ["@php bin/combine"],
         "app:run": ["@php bin/run_optimization_job"],
         "app:run:profile": [
             "@php -dxdebug.mode=profile -dxdebug.start_with_request=yes -dxdebug.output_dir=tests/output -dxdebug.profiler_output_name=cachegrind.out.%p bin/run_optimization_job"

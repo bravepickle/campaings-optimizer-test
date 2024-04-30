@@ -4,14 +4,11 @@ services:
         build:
             context: etc/php
             dockerfile: Dockerfile
-#        image: php:8.3-cli-alpine3.19
         hostname: app
         container_name: test_app
-#        command: "tail -f /dev/null"
         working_dir: "/app"
         volumes:
             - ".:/app"
-            # TODO: php custom config
             - "./etc/php/php.ini:/usr/local/etc/php/php.ini:ro"
         depends_on:
             - redis
